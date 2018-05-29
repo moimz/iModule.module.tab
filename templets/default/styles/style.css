@@ -1,0 +1,14 @@
+/**
+ * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodule.kr)
+ *
+ * 탭모듈 기본템플릿 - 헤더
+ * 
+ * @file /modules/tab/templets/default/header.php
+ * @author Arzz (arzz@arzz.com)
+ * @license MIT License
+ * @version 3.0.0
+ * @modified 2018. 5. 21.
+ */
+div[data-module=tab] > div.header {padding-bottom:20px;}
+div[data-module=tab] > div[data-role=tabbar] {margin-bottom:20px;}
+div[data-module=tab] > div.footer {padding-top:20px;}

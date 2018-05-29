@@ -1,0 +1,107 @@
+{
+	"id":"com.moimz.imodule.module.tab",
+	"icon":"xi xi-sitemap",
+	"title":{
+		"ko":"탭모듈"
+	},
+	"version":"3.0.0",
+	"description":{
+		"ko":"탭메뉴(3차메뉴)를 생성/관리합니다."
+	},
+	"author":{
+		"name":"Arzz",
+		"email":"arzz@arzz.com"
+	},
+	"homepage":"http://www.imodule.kr",
+	"dependencies":{
+		"core":"3.0.0"
+	},
+	"language":"ko",
+	"admin":true,
+	"context":true,
+	"global":false,
+	"databases":{
+		"tab_group_table":{
+			"columns":{
+				"idx":{
+					"type":"int",
+					"length":11,
+					"comment":"고유값"
+				},
+				"title":{
+					"type":"varchar",
+					"length":50,
+					"comment":"탭 그룹이름"
+				},
+				"templet":{
+					"type":"varchar",
+					"length":20,
+					"default":"default",
+					"comment":"탭 그룹 템플릿"
+				},
+				"templet_configs":{
+					"type":"text",
+					"is_null":true,
+					"comment":"탭 그룹 템플릿 설정"
+				},
+				"header":{
+					"type":"text",
+					"comment":"탭 그룹 헤더설정"
+				},
+				"footer":{
+					"type":"text",
+					"comment":"탭 그룹 푸터설정"
+				}
+			},
+			"indexes":{
+				"idx":"primary_key"
+			},
+			"auto_increment":"idx",
+			"comment":"탭 그룹"
+		},
+		"tab_context_table":{
+			"columns":{
+				"parent":{
+					"type":"int",
+					"length":11,
+					"comment":"탭 그룹 고유값"
+				},
+				"tab":{
+					"type":"varchar",
+					"length":20,
+					"comment":"탭 ID"
+				},
+				"title":{
+					"type":"varchar",
+					"length":50,
+					"comment":"탭 이름"
+				},
+				"description":{
+					"type":"text",
+					"is_null":true,
+					"comment":"탭 설명"
+				},
+				"type":{
+					"type":"enum",
+					"length":"'HTML','PAGE','EXTERNAL','WIDGET','MODULE','LINK','EMPTY'",
+					"default":"EMPTY",
+					"comment":"탭 컨텍스트 종류"
+				},
+				"context":{
+					"type":"text",
+					"comment":"탭 컨텍스트 설정"
+				},
+				"sort":{
+					"type":"int",
+					"length":11,
+					"default":0,
+					"comment":"탭 순서"
+				}
+			},
+			"indexes":{
+				"parent,tab":"primary_key"
+			},
+			"comment":"탭 컨텍스트"
+		}
+	}
+}
