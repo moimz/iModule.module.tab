@@ -219,14 +219,14 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 						selModel:new Ext.selection.RowModel(),
 						bbar:[
 							new Ext.Button({
-								text:'<i class="fa fa-caret-up"></i>',
+								iconCls:"fa fa-caret-up",
 								handler:function() {
 									Admin.gridSort(Ext.getCmp("ModuleTabContextList"),"sort","up");
 									Admin.gridSave(Ext.getCmp("ModuleTabContextList"),ENV.getProcessUrl("tab","@saveContextSort"),500);
 								}
 							}),
 							new Ext.Button({
-								text:'<i class="fa fa-caret-down"></i>',
+								iconCls:"fa fa-caret-down",
 								handler:function() {
 									Admin.gridSort(Ext.getCmp("ModuleTabContextList"),"sort","down");
 									Admin.gridSave(Ext.getCmp("ModuleTabContextList"),ENV.getProcessUrl("tab","@saveContextSort"),500);

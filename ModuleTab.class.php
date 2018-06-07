@@ -228,7 +228,7 @@ class ModuleTab {
 		$templet->title = $this->getText('admin/configs/form/templet');
 		$templet->name = 'templet';
 		$templet->type = 'templet';
-		$templet->target = 'example1';
+		$templet->target = 'tab';
 		$templet->use_default = true;
 		$templet->value = $values != null && isset($values->templet) == true ? $values->templet : '#';
 		$configs[] = $templet;
@@ -469,8 +469,9 @@ class ModuleTab {
 		if (count($contexts) == 0) return $this->getError('NO_CONTEXTS');
 		
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
+		$tab = $this->getTab($parent,$tab);
 		
-		$context = $this->getTabContext($parent,$tab);
+		$context = $this->getTabContext($parent,$tab->tab);
 		
 		/**
 		 * 템플릿파일을 호출한다.

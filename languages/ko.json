@@ -4,7 +4,9 @@
 	},
 	"admin":{
 		"configs":{
-			"templet":"템플릿"
+			"form":{
+				"templet":"템플릿"
+			}
 		},
 		"group":{
 			"title":"그룹관리",
