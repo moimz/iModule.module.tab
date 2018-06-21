@@ -45,7 +45,7 @@ var Tab = {
 										name:"title",
 										afterBodyEl:'<div class="x-form-help">'+Tab.getText("admin/group/form/title_help")+'</div>'
 									}),
-									Admin.templetField(Tab.getText("admin/group/form/templet"),"templet","tab",false),
+									Admin.templetField(Tab.getText("admin/group/form/templet"),"templet","module","tab",false),
 								]
 							}),
 							new Ext.form.FieldSet({
@@ -402,7 +402,7 @@ var Tab = {
 																		
 																		for (var i=0, loop=result.configs.length;i<loop;i++) {
 																			if (result.configs[i].type == "templet") {
-																				Ext.getCmp("ModuleTabContextAddContextConfigs").add(Admin.templetField(result.configs[i].title,"@"+result.configs[i].name,result.configs[i].target,result.configs[i].use_default,ENV.getProcessUrl("tab","@getTempletConfigs"),{parent:parent,tab:form.getForm().findField("tab").getValue(),module:form.getForm().findField("target").getValue()}));
+																				Ext.getCmp("ModuleTabContextAddContextConfigs").add(Admin.templetField(result.configs[i].title,"@"+result.configs[i].name,"module",result.configs[i].target,result.configs[i].use_default,ENV.getProcessUrl("tab","@getTempletConfigs"),{parent:parent,tab:form.getForm().findField("tab").getValue(),module:form.getForm().findField("target").getValue()}));
 																				form.getForm().findField("@"+result.configs[i].name).setValue(result.configs[i].value);
 																			}
 																			
