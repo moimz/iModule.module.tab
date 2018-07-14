@@ -405,6 +405,12 @@ class ModuleTab {
 	function getHeader($context,$configs=null) {
 		$group = $this->getGroup($context);
 		
+		$contexts = $this->db()->select($this->table->context)->where('parent',$context)->orderBy('sort','asc')->get();
+		if (count($contexts) == 0) return $this->getError('NO_CONTEXTS');
+		
+		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
+		$tab = $this->getTab($context,$tab);
+		
 		/**
 		 * 템플릿파일을 호출한다.
 		 */

@@ -12,3 +12,12 @@
  */
 if (defined('__IM__') == false) exit;
 ?>
+<div data-role="tabbar">
+	<div>
+		<ul>
+			<?php for ($i=0, $loop=count($contexts);$i<$loop;$i++) { ?>
+			<li<?php echo $contexts[$i]->tab == $tab->tab ? ' class="selected"' : ''; ?>><a href="<?php echo $me->getUrl($contexts[$i]->tab,false); ?>"><?php echo $contexts[$i]->title; ?></a></li>
+			<?php } ?>
+		</ul>
+	</div>
+</div>
