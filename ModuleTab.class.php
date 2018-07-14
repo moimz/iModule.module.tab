@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 21.
+ * @modified 2018. 7. 14.
  */
 class ModuleTab {
 	/**
@@ -405,14 +405,6 @@ class ModuleTab {
 	function getHeader($context,$configs=null) {
 		$group = $this->getGroup($context);
 		
-		if ($group->header->type == 'TEXT') {
-			$group_header = '<div class="header">'.$this->IM->getModule('wysiwyg')->decodeContent($group->header->text).'</div>';
-		} elseif ($group->header->type == 'EXTERNAL') {
-			$group_header = '<div class="header">'.$this->getTemplet($configs)->getExternal($group->header->external).'</div>';
-		} else {
-			$group_header = '';
-		}
-		
 		/**
 		 * 템플릿파일을 호출한다.
 		 */
@@ -427,14 +419,6 @@ class ModuleTab {
 	 */
 	function getFooter($context,$configs=null) {
 		$group = $this->getGroup($context);
-		
-		if ($group->footer->type == 'TEXT') {
-			$group_footer = '<div class="footer">'.$this->IM->getModule('wysiwyg')->decodeContent($group->footer->text).'</div>';
-		} elseif ($group->footer->type == 'EXTERNAL') {
-			$group_footer = '<div class="footer">'.$this->getTemplet($configs)->getExternal($group->footer->external).'</div>';
-		} else {
-			$group_footer = '';
-		}
 		
 		/**
 		 * 템플릿파일을 호출한다.
@@ -603,11 +587,9 @@ class ModuleTab {
 	function getGroup($idx) {
 		if (isset($this->groups[$idx]) == true) return $this->groups[$idx];
 		$group = $this->db()->select($this->table->group)->where('idx',$idx)->getOne();
-		if ($group != null) {
-			$group->header = json_decode($group->header);
-			$group->footer = json_decode($group->footer);
-			$group->templet_configs = json_decode($group->templet_configs);
-		}
+		if ($group == null) return null;
+		
+		$group->templet_configs = json_decode($group->templet_configs);
 		
 		$this->groups[$idx] = $group;
 		return $this->groups[$idx];

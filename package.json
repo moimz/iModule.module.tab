@@ -43,14 +43,6 @@
 					"type":"text",
 					"is_null":true,
 					"comment":"탭 그룹 템플릿 설정"
-				},
-				"header":{
-					"type":"text",
-					"comment":"탭 그룹 헤더설정"
-				},
-				"footer":{
-					"type":"text",
-					"comment":"탭 그룹 푸터설정"
 				}
 			},
 			"indexes":{

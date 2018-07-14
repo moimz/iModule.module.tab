@@ -7,7 +7,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 21.
+ * @modified 2018. 7. 14.
  */
 var Tab = {
 	/**
@@ -23,7 +23,7 @@ var Tab = {
 			new Ext.Window({
 				id:"ModuleTabGroupAddWindow",
 				title:(idx ? Tab.getText("admin/group/modify") : Tab.getText("admin/group/add")),
-				width:800,
+				width:600,
 				modal:true,
 				autoScroll:true,
 				border:false,
@@ -37,117 +37,12 @@ var Tab = {
 							new Ext.form.Hidden({
 								name:"idx"
 							}),
-							new Ext.form.FieldSet({
-								title:Tab.getText("admin/group/form/default_setting"),
-								items:[
-									new Ext.form.TextField({
-										fieldLabel:Tab.getText("admin/group/form/title"),
-										name:"title",
-										afterBodyEl:'<div class="x-form-help">'+Tab.getText("admin/group/form/title_help")+'</div>'
-									}),
-									Admin.templetField(Tab.getText("admin/group/form/templet"),"templet","module","tab",false),
-								]
+							new Ext.form.TextField({
+								fieldLabel:Tab.getText("admin/group/form/title"),
+								name:"title",
+								afterBodyEl:'<div class="x-form-help">'+Tab.getText("admin/group/form/title_help")+'</div>'
 							}),
-							new Ext.form.FieldSet({
-								title:"탭 그룹헤더",
-								items:[
-									new Ext.form.ComboBox({
-										fieldLabel:"헤더종류",
-										name:"header_type",
-										store:new Ext.data.ArrayStore({
-											fields:["display","value"],
-											data:[[Tab.getText("admin/group/header_type/NONE"),"NONE"],[Tab.getText("admin/group/header_type/EXTERNAL"),"EXTERNAL"],[Tab.getText("admin/group/header_type/TEXT"),"TEXT"]]
-										}),
-										displayField:"display",
-										valueField:"value",
-										value:"NONE",
-										listeners:{
-											change:function(form,value) {
-												Ext.getCmp("ModuleTabGroupAddHeader-EXTERNAL").disable().hide();
-												Ext.getCmp("ModuleTabGroupAddHeader-TEXT").disable().hide();
-												
-												if (value != "NONE") {
-													Ext.getCmp("ModuleTabGroupAddHeader-"+value).enable().show();
-													Ext.getCmp("ModuleTabGroupAddHeader-"+value).reset();
-												}
-											}
-										},
-										afterBodyEl:'<div class="x-form-help">페이지 상단에 나타날 내용을 추가합니다.</div>'
-									}),
-									new Ext.form.ComboBox({
-										id:"ModuleTabGroupAddHeader-EXTERNAL",
-										fieldLabel:Tab.getText("admin/group/form/external"),
-										name:"header_external",
-										hidden:true,
-										disabled:true,
-										store:new Ext.data.JsonStore({
-											proxy:{
-												type:"ajax",
-												url:ENV.getProcessUrl("admin","@getExternals"),
-												reader:{type:"json"}
-											},
-											autoLoad:true,
-											remoteSort:false,
-											sorters:[{property:"path",direction:"ASC"}],
-											fields:["path"]
-										}),
-										displayField:"path",
-										valueField:"path",
-										afterBodyEl:'<div class="x-form-help">'+Tab.getText("admin/group/form/external_help")+'</div>'
-									}),
-									Admin.wysiwygField(Tab.getText("admin/group/form/text"),"header_text",{id:"ModuleTabGroupAddHeader-TEXT",hidden:true,disabled:true})
-								]
-							}),
-							new Ext.form.FieldSet({
-								title:Tab.getText("admin/group/form/footer_setting"),
-								items:[
-									new Ext.form.ComboBox({
-										fieldLabel:Tab.getText("admin/group/form/footer_type"),
-										name:"footer_type",
-										store:new Ext.data.ArrayStore({
-											fields:["display","value"],
-											data:[[Tab.getText("admin/group/footer_type/NONE"),"NONE"],[Tab.getText("admin/group/footer_type/EXTERNAL"),"EXTERNAL"],[Tab.getText("admin/group/footer_type/TEXT"),"TEXT"]]
-										}),
-										displayField:"display",
-										valueField:"value",
-										value:"NONE",
-										listeners:{
-											change:function(form,value) {
-												Ext.getCmp("ModuleTabGroupAddFooter-EXTERNAL").disable().hide();
-												Ext.getCmp("ModuleTabGroupAddFooter-TEXT").disable().hide();
-												
-												if (value != "NONE") {
-													Ext.getCmp("ModuleTabGroupAddFooter-"+value).enable().show();
-													Ext.getCmp("ModuleTabGroupAddFooter-"+value).reset();
-												}
-											}
-										},
-										afterBodyEl:'<div class="x-form-help">페이지 하단에 나타날 내용을 추가합니다.</div>'
-									}),
-									new Ext.form.ComboBox({
-										id:"ModuleTabGroupAddFooter-EXTERNAL",
-										fieldLabel:Tab.getText("admin/group/form/external"),
-										name:"footer_external",
-										hidden:true,
-										disabled:true,
-										store:new Ext.data.JsonStore({
-											proxy:{
-												type:"ajax",
-												url:ENV.getProcessUrl("admin","@getExternals"),
-												reader:{type:"json"}
-											},
-											autoLoad:true,
-											remoteSort:false,
-											sorters:[{property:"path",direction:"ASC"}],
-											fields:["path"]
-										}),
-										displayField:"path",
-										valueField:"path",
-										afterBodyEl:'<div class="x-form-help">'+Tab.getText("admin/group/form/external_help")+'</div>'
-									}),
-									Admin.wysiwygField(Tab.getText("admin/group/form/text"),"footer_text",{id:"ModuleTabGroupAddFooter-TEXT",hidden:true,disabled:true})
-								]
-							})
+							Admin.templetField(Tab.getText("admin/group/form/templet"),"templet","module","tab",false)
 						]
 					})
 				],

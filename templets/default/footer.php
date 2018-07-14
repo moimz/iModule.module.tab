@@ -12,4 +12,3 @@
  */
 if (defined('__IM__') == false) exit;
 ?>
-<?php echo $group_footer; ?>
