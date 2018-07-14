@@ -138,7 +138,7 @@ var Tab = {
 			new Ext.Window({
 				id:"ModuleTabContextAddWindow",
 				title:(tab ? Tab.getText("admin/context/modify") : Tab.getText("admin/context/add")),
-				width:700,
+				width:800,
 				modal:true,
 				border:false,
 				resizeable:false,
@@ -195,19 +195,138 @@ var Tab = {
 										emptyText:Admin.getText("configs/sitemap/form/type_help"),
 										listeners:{
 											change:function(form,value) {
-												Ext.getCmp("ModuleTabContextAddMODULE").hide().disable();
-												Ext.getCmp("ModuleTabContextAddEXTERNAL").hide().disable();
-												Ext.getCmp("ModuleTabContextAddWIDGET").hide().disable();
-												Ext.getCmp("ModuleTabContextAddLINK").hide().disable();
+												Ext.getCmp("ModuleTabContextAddContext-MODULE").hide().disable();
+												Ext.getCmp("ModuleTabContextAddContext-EXTERNAL").hide().disable();
+												Ext.getCmp("ModuleTabContextAddContext-WIDGET").hide().disable();
+												Ext.getCmp("ModuleTabContextAddContext-LINK").hide().disable();
 												
-												if (value != "EMPTY" && value != "HTML") Ext.getCmp("ModuleTabContextAdd"+value).show().enable();
+												if (value != "EMPTY" && value != "HTML") Ext.getCmp("ModuleTabContextAddContext-"+value).show().enable();
+												
+												Ext.getCmp("ModuleTabContextAddHeader").setDisabled(value == "LINK").setHidden(value == "LINK");
+												Ext.getCmp("ModuleTabContextAddFooter").setDisabled(value == "LINK").setHidden(value == "LINK");
 											}
 										}
 									})
 								]
 							}),
 							new Ext.form.FieldSet({
-								id:"ModuleTabContextAddMODULE",
+								id:"ModuleTabContextAddHeader",
+								title:Admin.getText("configs/sitemap/form/header"),
+								items:[
+									new Ext.form.ComboBox({
+										fieldLabel:Admin.getText("configs/sitemap/form/header_type"),
+										name:"header_type",
+										store:new Ext.data.ArrayStore({
+											fields:["display","value"],
+											data:(function() {
+												var datas = [];
+												for (var type in Admin.getText("configs/sitemap/header_type")) {
+													datas.push([Admin.getText("configs/sitemap/header_type/"+type),type]);
+												}
+												
+												return datas;
+											})()
+										}),
+										displayField:"display",
+										valueField:"value",
+										value:"NONE",
+										listeners:{
+											change:function(form,value) {
+												Ext.getCmp("ModuleTabContextAddHeader-EXTERNAL").disable().hide();
+												Ext.getCmp("ModuleTabContextAddHeader-TEXT").disable().hide();
+												
+												if (value != "NONE") {
+													Ext.getCmp("ModuleTabContextAddHeader-"+value).enable().show();
+													Ext.getCmp("ModuleTabContextAddHeader-"+value).reset();
+												}
+											}
+										},
+										afterBodyEl:'<div class="x-form-help">' + Admin.getText("configs/sitemap/form/header_help") + '</div>'
+									}),
+									new Ext.form.ComboBox({
+										id:"ModuleTabContextAddHeader-EXTERNAL",
+										fieldLabel:Admin.getText("configs/sitemap/form/header_external"),
+										name:"header_external",
+										hidden:true,
+										disabled:true,
+										store:new Ext.data.JsonStore({
+											proxy:{
+												type:"ajax",
+												url:ENV.getProcessUrl("admin","@getExternals"),
+												reader:{type:"json"}
+											},
+											autoLoad:true,
+											remoteSort:false,
+											sorters:[{property:"path",direction:"ASC"}],
+											fields:["path"]
+										}),
+										displayField:"path",
+										valueField:"path",
+										afterBodyEl:'<div class="x-form-help">' + Admin.getText("configs/sitemap/form/header_external_help") + '</div>'
+									}),
+									Admin.wysiwygField(Admin.getText("configs/sitemap/form/content"),"header_text",{id:"ModuleTabContextAddHeader-TEXT",hidden:true,disabled:true})
+								]
+							}),
+							new Ext.form.FieldSet({
+								id:"ModuleTabContextAddFooter",
+								title:Admin.getText("configs/sitemap/form/footer"),
+								items:[
+									new Ext.form.ComboBox({
+										fieldLabel:Admin.getText("configs/sitemap/form/footer_type"),
+										name:"footer_type",
+										store:new Ext.data.ArrayStore({
+											fields:["display","value"],
+											data:(function() {
+												var datas = [];
+												for (var type in Admin.getText("configs/sitemap/footer_type")) {
+													datas.push([Admin.getText("configs/sitemap/footer_type/"+type),type]);
+												}
+												
+												return datas;
+											})()
+										}),
+										displayField:"display",
+										valueField:"value",
+										value:"NONE",
+										listeners:{
+											change:function(form,value) {
+												Ext.getCmp("ModuleTabContextAddFooter-EXTERNAL").disable().hide();
+												Ext.getCmp("ModuleTabContextAddFooter-TEXT").disable().hide();
+												
+												if (value != "NONE") {
+													Ext.getCmp("ModuleTabContextAddFooter-"+value).enable().show();
+													Ext.getCmp("ModuleTabContextAddFooter-"+value).reset();
+												}
+											}
+										},
+										afterBodyEl:'<div class="x-form-help">' + Admin.getText("configs/sitemap/form/footer_help") + '</div>'
+									}),
+									new Ext.form.ComboBox({
+										id:"ModuleTabContextAddFooter-EXTERNAL",
+										fieldLabel:Admin.getText("configs/sitemap/form/footer_external"),
+										name:"footer_external",
+										hidden:true,
+										disabled:true,
+										store:new Ext.data.JsonStore({
+											proxy:{
+												type:"ajax",
+												url:ENV.getProcessUrl("admin","@getExternals"),
+												reader:{type:"json"}
+											},
+											autoLoad:true,
+											remoteSort:false,
+											sorters:[{property:"path",direction:"ASC"}],
+											fields:["path"]
+										}),
+										displayField:"path",
+										valueField:"path",
+										afterBodyEl:'<div class="x-form-help"> ' + Admin.getText("configs/sitemap/form/footer_external_help") + '</div>'
+									}),
+									Admin.wysiwygField(Admin.getText("configs/sitemap/form/content"),"footer_text",{id:"ModuleTabContextAddFooter-TEXT",hidden:true,disabled:true})
+								]
+							}),
+							new Ext.form.FieldSet({
+								id:"ModuleTabContextAddContext-MODULE",
 								title:Admin.getText("configs/sitemap/form/context"),
 								items:[
 									new Ext.form.FieldContainer({
@@ -344,7 +463,7 @@ var Tab = {
 								}
 							}),
 							new Ext.form.FieldSet({
-								id:"ModuleTabContextAddEXTERNAL",
+								id:"ModuleTabContextAddContext-EXTERNAL",
 								title:Admin.getText("configs/sitemap/form/context"),
 								items:[
 									new Ext.form.ComboBox({
@@ -368,7 +487,7 @@ var Tab = {
 								]
 							}),
 							new Ext.form.FieldSet({
-								id:"ModuleTabContextAddWIDGET",
+								id:"ModuleTabContextAddContext-WIDGET",
 								title:Admin.getText("configs/sitemap/form/context"),
 								items:[
 									new Ext.form.TextArea({
@@ -385,7 +504,7 @@ var Tab = {
 								}
 							}),
 							new Ext.form.FieldSet({
-								id:"ModuleTabContextAddLINK",
+								id:"ModuleTabContextAddContext-LINK",
 								title:Admin.getText("configs/sitemap/form/context"),
 								items:[
 									new Ext.form.FieldContainer({
@@ -487,10 +606,10 @@ var Tab = {
 								}
 							});
 						} else {
-							Ext.getCmp("ModuleTabContextAddMODULE").hide().disable();
-							Ext.getCmp("ModuleTabContextAddEXTERNAL").hide().disable();
-							Ext.getCmp("ModuleTabContextAddWIDGET").hide().disable();
-							Ext.getCmp("ModuleTabContextAddLINK").hide().disable();
+							Ext.getCmp("ModuleTabContextAddContext-MODULE").hide().disable();
+							Ext.getCmp("ModuleTabContextAddContext-EXTERNAL").hide().disable();
+							Ext.getCmp("ModuleTabContextAddContext-WIDGET").hide().disable();
+							Ext.getCmp("ModuleTabContextAddContext-LINK").hide().disable();
 						}
 					}
 				}

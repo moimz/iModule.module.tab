@@ -79,6 +79,16 @@
 					"default":"EMPTY",
 					"comment":"탭 컨텍스트 종류"
 				},
+				"header":{
+					"type":"longtext",
+					"is_null":true,
+					"comment":"컨텍스트 헤더설정"
+				},
+				"footer":{
+					"type":"longtext",
+					"is_null":true,
+					"comment":"컨텍스트 푸터설정"
+				},
 				"context":{
 					"type":"text",
 					"comment":"탭 컨텍스트 설정"

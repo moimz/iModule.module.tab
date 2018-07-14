@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 22.
+ * @modified 2018. 7. 14.
  */
 if (defined('__IM__') == false) exit;
 
@@ -23,6 +23,32 @@ $tab = preg_match('/^[a-zA-Z0-9_]+$/',Request('tab')) == true ? Request('tab') :
 if ($oTab != $tab && $this->db()->select($this->table->context)->where('parent',$parent)->where('tab',$tab)->has() == true) {
 	$errors['tab'] = $this->getErrorText('DUPLICATED');
 }
+
+$header = new stdClass();
+$footer = new stdClass();
+if ($type == 'LINK') {
+	$header->type = 'NONE';
+	$footer->type = 'NONE';
+} else {
+	$header->type = Request('header_type');
+	if ($header->type == 'TEXT') {
+		$header = $this->IM->getModule('admin')->getWysiwygContent('header_text','tab','context.header',$header);
+		$header->type = 'TEXT';
+	} elseif ($header->type == 'EXTERNAL') {
+		$header->external = Request('header_external') ? Request('header_external') : $errors['header_external'] = $this->getErrorText('REQUIRED');
+	}
+	
+	$footer = new stdClass();
+	$footer->type = Request('footer_type');
+	if ($footer->type == 'TEXT') {
+		$footer = $this->IM->getModule('admin')->getWysiwygContent('footer_text','tab','context.footer',$footer);
+		$footer->type = 'TEXT';
+	} elseif ($footer->type == 'EXTERNAL') {
+		$footer->external = Request('footer_external') ? Request('footer_external') : $errors['footer_external'] = $this->getErrorText('REQUIRED');
+	}
+}
+$header = json_encode($header,JSON_UNESCAPED_UNICODE);
+$footer = json_encode($footer,JSON_UNESCAPED_UNICODE);
 
 $context = new stdClass();
 
@@ -55,6 +81,8 @@ if (count($errors) == 0) {
 	$insert['title'] = $title;
 	$insert['description'] = $description;
 	$insert['type'] = $type;
+	$insert['header'] = $header;
+	$insert['footer'] = $footer;
 	$insert['context'] = json_encode($context,JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
 	
 	if ($oTab) {

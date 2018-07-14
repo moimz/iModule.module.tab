@@ -30,16 +30,6 @@
 				"title":"그룹명",
 				"templet":"템플릿",
 				"contexts":"컨텍스트"
-			},
-			"header_type":{
-				"NONE":"헤더 내용 없음",
-				"EXTERNAL":"외부파일 추가",
-				"TEXT":"내용 직접 입력"
-			},
-			"footer_type":{
-				"NONE":"헤더 내용 없음",
-				"EXTERNAL":"외부파일 추가",
-				"TEXT":"내용 직접 입력"
 			}
 		},
 		"context":{

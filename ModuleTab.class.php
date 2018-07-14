@@ -455,12 +455,28 @@ class ModuleTab {
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
 		$tab = $this->getTab($parent,$tab);
 		
+		if ($tab->header->type == 'TEXT') {
+			$header = '<div class="header">'.$this->IM->getModule('wysiwyg')->decodeContent($tab->header->text).'</div>';
+		} elseif ($tab->header->type == 'EXTERNAL') {
+			$header = '<div class="header">'.$this->getTemplet($configs)->getExternal($tab->header->external).'</div>';
+		} else {
+			$header = '';
+		}
+		
+		if ($tab->footer->type == 'TEXT') {
+			$footer = '<div class="header">'.$this->IM->getModule('wysiwyg')->decodeContent($tab->footer->text).'</div>';
+		} elseif ($tab->footer->type == 'EXTERNAL') {
+			$footer = '<div class="header">'.$this->getTemplet($configs)->getExternal($tab->footer->external).'</div>';
+		} else {
+			$footer = '';
+		}
+		
 		$context = $this->getTabContext($parent,$tab->tab);
 		
 		/**
 		 * 템플릿파일을 호출한다.
 		 */
-		return $this->getTemplet($configs)->getContext('context',get_defined_vars());
+		return $this->getTemplet($configs)->getContext('context',get_defined_vars(),$header,$footer);
 	}
 	
 	/**
@@ -605,9 +621,11 @@ class ModuleTab {
 	function getTab($parent,$tab) {
 		if (isset($this->tabs[$parent.'-'.$tab]) == true) return $this->tabs[$parent.'-'.$tab];
 		$context = $this->db()->select($this->table->context)->where('parent',$parent)->where('tab',$tab)->getOne();
-		if ($context != null) {
-			$context->context = json_decode($context->context);
-		}
+		if ($context == null) return null;
+		
+		$context->context = json_decode($context->context);
+		$context->header = json_decode($context->header);
+		$context->footer = json_decode($context->footer);
 		
 		$this->tabs[$parent.'-'.$tab] = $context;
 		return $this->tabs[$parent.'-'.$tab];
