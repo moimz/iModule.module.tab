@@ -20,6 +20,13 @@
 	"admin":true,
 	"context":true,
 	"global":false,
+	"targets":{
+		"core":{
+			"afterGetUrl":[
+				"context"
+			]
+		}
+	},
 	"databases":{
 		"tab_group_table":{
 			"columns":{

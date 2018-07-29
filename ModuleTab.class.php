@@ -638,6 +638,131 @@ class ModuleTab {
 	}
 	
 	/**
+	 * 특정 모듈의 특정 컨텍스트를 사용하도록 설정된 탭을 반환한다.
+	 *
+	 * @param string $module 모듈명
+	 * @param string $context 컨텍스트명
+	 * @param string[] $extacts 반드시 일치해야하는 컨텍스트 옵션
+	 * @param string[] $options 반드시 일치할 필요는 없는 컨텍스트 옵션
+	 * @param boolean $isSameDomain 현재 도메인 우선모드 (기본값 : false, true 일 경우 같은 도메인일 경우 우선, false 일 경우 $options 설정값에 우선)
+	 */
+	function getTabUrl($module,$context,$exacts=array(),$options=array(),$isSameDomain=false) {
+		$page = $this->findTab($module,$context,$exacts,$options,$isSameDomain);
+		return $page == null ? null : $this->IM->getUrl($page->menu,$page->page,$page->tab,false,false,$page->domain,$page->language);
+	}
+	
+	/**
+	 * 특정 모듈의 특정 컨텍스트를 사용하도록 설정된 탭을 반환한다.
+	 *
+	 * @param string $module 모듈명
+	 * @param string $context 컨텍스트명
+	 * @param string[] $extacts 반드시 일치해야하는 컨텍스트 옵션
+	 * @param string[] $options 반드시 일치할 필요는 없는 컨텍스트 옵션
+	 * @param boolean $isSameDomain 현재 도메인 우선모드 (기본값 : false, true 일 경우 같은 도메인일 경우 우선, false 일 경우 $options 설정값에 우선)
+	 */
+	function findTab($module,$context,$exacts=array(),$options=array(),$isSameDomain=false,$matches=array()) {
+		if (count($matches) == 0) {
+			$tabs = $this->db()->select($this->table->context)->where('type','MODULE')->get();
+			foreach ($tabs as $tab) {
+				$tab->context = json_decode($tab->context);
+				
+				/**
+				 * 반드시 일치해야하는 설정값에 해당하는 페이지를 찾는다.
+				 */
+				if ($tab->context->module == $module && $tab->context->context == $context) {
+					$isMatched = true;
+					foreach ($exacts as $key=>$value) {
+						if ($tab->context->configs->$key != $value) $isMatched = false;
+					}
+					
+					if ($isMatched == true) $matches[] = $tab;
+				}
+			}
+			
+			/**
+			 * 사이트맵의 도메인정보를 검색결과에 추가한다.
+			 */
+			$sitemapMatches = array();
+			foreach ($matches as $match) {
+				$pages = $this->IM->db()->select($this->IM->getTable('sitemap'))->where('context','{"module":"tab","context":'.$match->parent.',%','LIKE')->where('type','MODULE')->get();
+				foreach ($pages as $page) {
+					$item = json_decode(json_encode($match));
+					$item->domain = $page->domain;
+					$item->language = $page->language;
+					$item->menu = $page->menu;
+					$item->page = $page->page;
+					$sitemapMatches[] = $item;
+				}
+			}
+			
+			$matches = $sitemapMatches;
+		}
+		
+		/**
+		 * 설정과 일치하는 페이지가 없을 경우, NULL 을 반환한다.
+		 */
+		if (count($matches) == 0) return null;
+		
+		/**
+		 * 설정과 일치하는 페이지가 유일할 경우 해당 페이지를 반환한다.
+		 */
+		if (count($matches) == 1) return $matches[0];
+		
+		/**
+		 * 설정과 일치하는 페이지가 2개 이상일 경우, $options 설정이나, $isSameDomain 설정에 따라 최대한 일치하는 페이지를 재탐색한다.
+		 */
+		$filters = array();
+		
+		/**
+		 * 같은 도메인 우선일 경우
+		 */
+		if ($isSameDomain == true) {
+			foreach ($matches as $match) {
+				if ($match->domain == $this->IM->site->domain && $match->language == $this->IM->language) $filters[] = $match;
+			}
+			
+			if (count($filters) == 0) {
+				foreach ($matches as $match) {
+					if ($match->domain == $this->IM->site->domain) $filters[] = $match;
+				}
+			}
+			
+			/**
+			 * 같은 도메인에 설정과 일치하는 페이지가 없을 경우, $options 우선모드로 재탐색한다.
+			 */
+			if (count($filters) == 0) return $this->findTab($module,$context,$exacts,$options,false,$matches);
+			
+			/**
+			 * 같은 도메인에 설정과 일치하는 페이지가 유일할 경우, 해당 페이지를 반환한다.
+			 */
+			if (count($filters) == 1) return $filters[0];
+			
+			/**
+			 * 같은 도메인에 설정과 일치하는 페이지가 2개 이상일 경우, $options 설정에 해당하는 것을 재탐색하기 위해 $matches 를 재정의한다.
+			 */
+			$matches = $filters;
+		}
+		
+		/**
+		 * $options 설정과 최대한 많이 일치하는 페이지를 재탐색한다.
+		 */
+		$tab = null;
+		foreach ($matches as $match) {
+			/**
+			 * 일치하는 $options 설정값 갯수
+			 */
+			$match->matchCount = 0;
+			foreach ($options as $key=>$value) {
+				if ($match->context->configs->$key == $value) $match->matchCount++;
+			}
+			
+			if ($tab == null || $tab->matchCount < $match->matchCount) $tab = $match;
+		}
+		
+		return $tab;
+	}
+	
+	/**
 	 * 현재 모듈에서 처리해야하는 요청이 들어왔을 경우 처리하여 결과를 반환한다.
 	 * 소스코드 관리를 편하게 하기 위해 각 요쳥별로 별도의 PHP 파일로 관리한다.
 	 * 작업코드가 '@' 로 시작할 경우 사이트관리자를 위한 작업으로 최고관리자 권한이 필요하다.
