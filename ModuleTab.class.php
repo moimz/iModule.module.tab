@@ -460,6 +460,7 @@ class ModuleTab {
 		
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
 		$tab = $this->getTab($parent,$tab);
+		if ($tab == null) return $this->getError('NOT_FOUND_PAGE');
 		
 		if ($tab->header->type == 'TEXT') {
 			$header = '<div class="header">'.$this->IM->getModule('wysiwyg')->decodeContent($tab->header->text).'</div>';
