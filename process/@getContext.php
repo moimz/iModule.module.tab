@@ -1,6 +1,6 @@
 <?php
 /**
- * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodule.kr)
+ * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodules.io)
  *
  * 탭 컨텍스트 정보를 가져온다.
  * 

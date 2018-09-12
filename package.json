@@ -12,19 +12,17 @@
 		"name":"Arzz",
 		"email":"arzz@arzz.com"
 	},
-	"homepage":"http://www.imodule.kr",
+	"homepage":"https://www.imodules.io",
+	"versionChecker":"https://api.moimz.com/download/latest",
 	"dependencies":{
 		"core":"3.0.0"
 	},
 	"language":"ko",
 	"admin":true,
 	"context":true,
-	"global":false,
 	"targets":{
 		"core":{
-			"afterGetUrl":[
-				"context"
-			]
+			"afterGetContextPage":"*"
 		}
 	},
 	"databases":{
@@ -56,7 +54,7 @@
 				"idx":"primary_key"
 			},
 			"auto_increment":"idx",
-			"comment":"탭 그룹"
+			"comment":"탭 그룹 테이블"
 		},
 		"tab_context_table":{
 			"columns":{
@@ -110,7 +108,7 @@
 			"indexes":{
 				"parent,tab":"primary_key"
 			},
-			"comment":"탭 컨텍스트"
+			"comment":"탭 컨텍스트 테이블"
 		}
 	}
 }
