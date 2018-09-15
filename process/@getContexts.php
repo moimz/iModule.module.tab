@@ -2,7 +2,7 @@
 /**
  * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodules.io)
  * 
- * 탭 컨텍스트를 저장한다.
+ * 탭 컨텍스트 목록을 가져온다.
  *
  * @file /modules/tab/process/@getContexts.php
  * @author Arzz (arzz@arzz.com)
@@ -16,7 +16,6 @@ $parent = Request('parent');
 
 $lists = $this->db()->select($this->table->context)->where('parent',$parent)->orderBy('sort','asc')->get();
 for ($i=0, $loop=count($lists);$i<$loop;$i++) {
-	
 	$context = json_decode($lists[$i]->context);
 	if ($lists[$i]->type == 'EXTERNAL') {
 		$lists[$i]->context = $context->external;
