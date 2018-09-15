@@ -2,7 +2,7 @@
 /**
  * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodules.io)
  *
- * 다른 모듈속에서 호출이 가능한 컨텍스트 모듈을 가져온다.
+ * 탭 컨텍스트에 사용된 모듈의 설정값을 가져온다.
  * 
  * @file /modules/tab/process/@getModuleContextConfigs.php
  * @author Arzz (arzz@arzz.com)
@@ -12,10 +12,10 @@
  */
 if (defined('__IM__') == false) exit;
 
-$parent = Request('parent');
-$tab = Request('tab');
-$module = Request('target');
-$context = Request('context');
+$parent = Param('parent');
+$tab = Param('tab');
+$module = Param('target');
+$context = Param('context');
 
 $results->success = true;
 

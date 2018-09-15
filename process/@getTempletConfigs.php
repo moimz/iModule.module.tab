@@ -2,7 +2,7 @@
 /**
  * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodules.io)
  *
- * 템플릿 설정을 가져온다.
+ * 탭 컨텍스트에 사용된 모듈의 템플릿 설정을 가져온다.
  * 
  * @file /modules/tab/process/@getTempletConfigs.php
  * @author Arzz (arzz@arzz.com)
@@ -12,14 +12,13 @@
  */
 if (defined('__IM__') == false) exit;
 
-$parent = Request('parent');
-$tab = Request('tab');
-$name = Request('name');
-$type = Request('type');
-$target = Request('target');
-$templet = Request('templet');
-$position = Request('position');
-$module = Request('module');
+$parent = Param('parent');
+$tab = Param('tab');
+$name = Param('name');
+$type = Param('type');
+$target = Param('target');
+$templet = Param('templet');
+$module = Param('module');
 
 if ($type == 'module') {
 	$Templet = $this->IM->getModule($target,true)->getTemplet($templet);
