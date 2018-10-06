@@ -655,13 +655,13 @@ class ModuleTab {
 			/**
 			 * 사이트맵의 도메인정보를 검색결과에 추가한다.
 			 */
-			$pages = $this->IM->db()->select($this->IM->getTable('sitemap'))->where('type','MODULE')->where('context','{"module":"tab","context":'.$tab->parent.',%','LIKE')->get();
+			$pages = $this->IM->getContextPage('tab',$tab->parent);
 			foreach ($pages as $page) {
 				$item = new stdClass();
 				$item->domain = $page->domain;
 				$item->language = $page->language;
 				$item->context = $tab->context;
-				$item->url = $page->menu.'/'.$page->page.'/'.$tab->tab;
+				$item->url = $page->url.'/'.$tab->tab;
 				$matches[] = $item;
 			}
 		}
