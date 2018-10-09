@@ -459,6 +459,10 @@ class ModuleTab {
 		if (count($contexts) == 0) return $this->getError('NO_CONTEXTS');
 		
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
+		if ($this->getView() != $tab) {
+			header("location:".$this->IM->getUrl(null,null,$tab));
+			exit;
+		}
 		$tab = $this->getTab($parent,$tab);
 		if ($tab == null) return $this->getError('NOT_FOUND_PAGE');
 		
