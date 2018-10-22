@@ -70,6 +70,7 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 									} else {
 										Ext.getCmp("ModuleTabGroupList").enable();
 										Ext.getCmp("ModuleTabContextList").disable();
+										Ext.getCmp("ModuleTabContextList").setTitle("컨텍스트관리");
 										
 										if (Ext.getCmp("ModuleTabGroupList").selected != null) {
 											var select = Ext.getCmp("ModuleTabGroupList").getStore().find("idx",Ext.getCmp("ModuleTabGroupList").selected,0,false,false,true);
@@ -113,6 +114,7 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 						],
 						listeners:{
 							select:function(grid,record) {
+								Ext.getCmp("ModuleTabContextList").setTitle(record.data.title + " 컨텍스트관리");
 								Ext.getCmp("ModuleTabContextList").getStore().getProxy().setExtraParam("parent",record.data.idx);
 								Ext.getCmp("ModuleTabContextList").getStore().reload();
 							},

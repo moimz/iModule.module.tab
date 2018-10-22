@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 9. 12.
+ * @modified 2018. 10. 17.
  */
 class ModuleTab {
 	/**
@@ -391,7 +391,7 @@ class ModuleTab {
 		/**
 		 * 컨텍스트 컨테이너를 설정한다.
 		 */
-		$html.= PHP_EOL.'</div>'.PHP_EOL.'<!--// EXAMPLE #1 MODULE -->'.PHP_EOL;
+		$html.= PHP_EOL.'</div>'.PHP_EOL.'<!--// TAB MODULE -->'.PHP_EOL;
 		
 		return $html;
 	}
@@ -460,7 +460,7 @@ class ModuleTab {
 		
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
 		if ($this->getView() != $tab) {
-			header("location:".$this->IM->getUrl(null,null,$tab));
+			header("location:".$this->IM->getUrl(null,null,$tab).$this->IM->getQueryString());
 			exit;
 		}
 		$tab = $this->getTab($parent,$tab);
