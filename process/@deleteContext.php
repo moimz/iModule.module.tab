@@ -4,7 +4,7 @@
  *
  * 탭 컨텍스트를 삭제한다.
  * 
- * @file /modules/ctl/process/@deleteContext.php
+ * @file /modules/tab/process/@deleteContext.php
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0

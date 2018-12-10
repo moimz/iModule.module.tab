@@ -8,12 +8,13 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 22.
+ * @modified 2018. 12. 10.
  */
 if (defined('__IM__') == false) exit;
 
 $parent = Request('parent');
 
+$is_default = false;
 $lists = $this->db()->select($this->table->context)->where('parent',$parent)->orderBy('sort','asc')->get();
 for ($i=0, $loop=count($lists);$i<$loop;$i++) {
 	$context = json_decode($lists[$i]->context);
@@ -34,8 +35,16 @@ for ($i=0, $loop=count($lists);$i<$loop;$i++) {
 		$lists[$i]->sort = $i;
 	}
 	
-	$results->success = true;
-	$results->lists = $lists;
-	$results->count = count($lists);
+	$lists[$i]->is_default = $lists[$i]->is_default == 'TRUE';
+	$is_default = $is_default || $lists[$i]->is_default;
 }
+
+if ($is_default == false && count($lists) > 0) {
+	$lists[0]->is_default = true;
+	$this->db()->update($this->table->context,array('is_default'=>'TRUE'))->where('parent',$lists[0]->parent)->where('tab',$lists[0]->tab)->execute();
+}
+
+$results->success = true;
+$results->lists = $lists;
+$results->count = count($lists);
 ?>

@@ -7,7 +7,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 7. 14.
+ * @modified 2018. 12. 10.
  */
 var Tab = {
 	/**
@@ -629,6 +629,17 @@ var Tab = {
 					});
 				}
 			}});
+		},
+		default:function(parent,tab) {
+			Ext.Msg.wait(Admin.getText("action/working"),Admin.getText("action/wait"));
+			$.send(ENV.getProcessUrl("tab","@defaultContext"),{parent:parent,tab:tab},function(result) {
+				if (result.success == true) {
+					Ext.Msg.show({title:Admin.getText("alert/info"),msg:Admin.getText("action/worked"),buttons:Ext.Msg.OK,icon:Ext.Msg.INFO,fn:function() {
+						Ext.getCmp("ModuleTabGroupList").selected = parent;
+						Ext.getCmp("ModuleTabGroupList").getStore().reload();
+					}});
+				}
+			});
 		}
 	}
 };

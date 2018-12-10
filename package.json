@@ -98,6 +98,12 @@
 					"type":"text",
 					"comment":"탭 컨텍스트 설정"
 				},
+				"is_default":{
+					"type":"enum",
+					"length":"'TRUE','FALSE'",
+					"default":"FALSE",
+					"comment":"기본탭 여부"
+				},
 				"sort":{
 					"type":"int",
 					"length":11,

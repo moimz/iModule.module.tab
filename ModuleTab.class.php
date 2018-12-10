@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 10. 17.
+ * @modified 2018. 12. 10.
  */
 class ModuleTab {
 	/**
@@ -43,6 +43,11 @@ class ModuleTab {
 	 */
 	private $groups = array();
 	private $tabs = array();
+	
+	/**
+	 * 기본 URL (다른 모듈에서 호출되었을 경우에 사용된다.)
+	 */
+	private $baseUrl = null;
 	
 	/**
 	 * class 선언
@@ -106,7 +111,27 @@ class ModuleTab {
 	 * @return string $url
 	 */
 	function getUrl($view=null,$idx=null) {
-		return $this->IM->getUrl(null,null,$view,$idx);
+		$url = $this->baseUrl ? $this->baseUrl : $this->IM->getUrl(null,null,false);
+		
+		$view = $view === null ? $this->getView($this->baseUrl) : $view;
+		if ($view == null || $view == false) return $url;
+		$url.= '/'.$view;
+		
+		$idx = $idx === null ? $this->getIdx($this->baseUrl) : $idx;
+		if ($idx == null || $idx == false) return $url;
+		
+		return $url.'/'.$idx;
+	}
+
+	/**
+	 * 다른모듈에서 호출된 경우 baseUrl 을 설정한다.
+	 *
+	 * @param string $url
+	 * @return $this
+	 */
+	function setUrl($url) {
+		$this->baseUrl = $this->IM->getUrl(null,null,$url,false);
+		return $this;
 	}
 	
 	/**
@@ -115,16 +140,7 @@ class ModuleTab {
 	 * @return string $view
 	 */
 	function getView() {
-		return $this->IM->getView();
-	}
-	
-	/**
-	 * view 값을 변경한다.
-	 *
-	 * @param string $view
-	 */
-	function setView($view) {
-		return $this->IM->setView($view);
+		return $this->IM->getView($this->baseUrl);
 	}
 	
 	/**
@@ -133,7 +149,7 @@ class ModuleTab {
 	 * @return string $idx
 	 */
 	function getIdx() {
-		return $this->IM->getIdx();
+		return $this->IM->getIdx($this->baseUrl);
 	}
 	
 	/**
@@ -458,9 +474,14 @@ class ModuleTab {
 		$contexts = $this->db()->select($this->table->context)->where('parent',$parent)->orderBy('sort','asc')->get();
 		if (count($contexts) == 0) return $this->getError('NO_CONTEXTS');
 		
-		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
+		$tab = $this->getView() ? $this->getView() : null;
+		if ($tab == null) {
+			$defaultTab = $this->db()->select($this->table->context)->where('parent',$parent)->where('is_default','TRUE')->getOne();
+			$tab = $defaultTab == null ? $contexts[0]->tab : $defaultTab->tab;
+		}
+		
 		if ($this->getView() != $tab) {
-			header("location:".$this->IM->getUrl(null,null,$tab).$this->IM->getQueryString());
+			header("location:".$this->getUrl($tab).$this->IM->getQueryString());
 			exit;
 		}
 		$tab = $this->getTab($parent,$tab);
@@ -533,7 +554,9 @@ class ModuleTab {
 		 * $page->context->widget : 해당 모듈에 전달할 환경설정값 (예 : 템플릿명 등)
 		 */
 		if ($context->type == 'MODULE') {
-			return $this->IM->getModule($context->context->module)->setUrl($context->tab)->getContext($context->context->context,$context->context->configs);
+			$baseUrl = $this->baseUrl ? str_replace($this->IM->getUrl(null,null,false).'/','',$this->baseUrl).'/' : '';
+			$baseUrl.= $context->tab;
+			return $this->IM->getModule($context->context->module,false,$context->context->module == 'tab')->setUrl($baseUrl)->getContext($context->context->context,$context->context->configs);
 		}
 	}
 	

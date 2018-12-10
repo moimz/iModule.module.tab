@@ -4,7 +4,7 @@
  *
  * 탭 그룹을 삭제한다.
  * 
- * @file /modules/ctl/process/@deleteGroup.php
+ * @file /modules/tab/process/@deleteGroup.php
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0

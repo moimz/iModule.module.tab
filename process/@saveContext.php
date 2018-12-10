@@ -55,6 +55,13 @@ $context = new stdClass();
 if ($type == 'MODULE') {
 	$context->module = Request('target') ? Request('target') : $errors['target'] = $this->getErrorText('REQUIRED');
 	$context->context = Request('context') ? Request('context') : $errors['context'] = $this->getErrorText('REQUIRED');
+	
+	if ($context->module == 'tab' && $context->context == $parent) {
+		$results->success = false;
+		$results->errors = array('context'=>'현재탭이 속한 탭 그룹을 선택할 수 없습니다.');
+		return;
+	}
+	
 	$configs = array();
 	foreach ($_POST as $key=>$value) {
 		if (preg_match('/^@(.*?)_configs_(.*?)$/',$key,$match) == true && array_key_exists('@'.$match[1],$_POST) == true) {

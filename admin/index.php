@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 21.
+ * @modified 2018. 12. 10.
  */
 if (defined('__IM__') == false) exit;
 ?>
@@ -200,7 +200,14 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 						columns:[{
 							text:Tab.getText("admin/context/columns/tab"),
 							width:120,
-							dataIndex:"tab"
+							dataIndex:"tab",
+							renderer:function(value,p,record) {
+								var sHTML = "";
+								if (record.data.is_default == true) sHTML+= '<i class="icon xi xi-pin"></i>';
+								sHTML+= value;
+								
+								return sHTML;
+							}
 						},{
 							text:Tab.getText("admin/context/columns/title"),
 							minWidth:150,
@@ -266,6 +273,16 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 									text:"컨텍스트 삭제",
 									handler:function() {
 										Tab.context.delete(record.data.parent,record.data.tab);
+									}
+								});
+								
+								menu.add("-");
+								
+								menu.add({
+									iconCls:"xi xi-pin",
+									text:"기본 컨텍스트로 설정",
+									handler:function() {
+										Tab.context.default(record.data.parent,record.data.tab);
 									}
 								});
 								

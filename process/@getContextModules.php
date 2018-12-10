@@ -15,7 +15,7 @@ if (defined('__IM__') == false) exit;
 $modules = $this->IM->getModule()->getContextModules();
 $lists = array();
 for ($i=0, $loop=count($modules);$i<$loop;$i++) {
-	if ($modules[$i]->module == 'tab') continue;
+//	if ($modules[$i]->module == 'tab') continue;
 	$mModule = $this->IM->getModule($modules[$i]->module);
 	if (method_exists($mModule,'setUrl') == false) continue;
 	$lists[] = $modules[$i];
