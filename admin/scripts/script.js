@@ -5,9 +5,9 @@
  * 
  * @file /modules/tab/admin/scripts/script.js
  * @author Arzz (arzz@arzz.com)
- * @license MIT License
+ * @license GPLv3
  * @version 3.0.0
- * @modified 2018. 12. 10.
+ * @modified 2019. 2. 6.
  */
 var Tab = {
 	/**
