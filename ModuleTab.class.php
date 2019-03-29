@@ -428,7 +428,7 @@ class ModuleTab {
 			$contexts[$i]->link = $this->getUrl($contexts[$i]->tab,false);
 			if ($contexts[$i]->type == 'LINK') {
 				$link = json_decode($contexts[$i]->context);
-				$contexts[$i]->link.= '#IM'.$link->target;
+				$contexts[$i]->link = $link->link.'#IM'.$link->target;
 			}
 		}
 		
