@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 12. 10.
+ * @modified 2019. 3. 29.
  */
 class ModuleTab {
 	/**
@@ -423,6 +423,14 @@ class ModuleTab {
 		
 		$contexts = $this->db()->select($this->table->context)->where('parent',$context)->orderBy('sort','asc')->get();
 		if (count($contexts) == 0) return $this->getError('NO_CONTEXTS');
+		
+		for ($i=0, $loop=count($contexts);$i<$loop;$i++) {
+			$contexts[$i]->link = $this->getUrl($contexts[$i]->tab,false);
+			if ($contexts[$i]->type == 'LINK') {
+				$link = json_decode($contexts[$i]->context);
+				$contexts[$i]->link.= '#IM'.$link->target;
+			}
+		}
 		
 		$tab = $this->getView() ? $this->getView() : $contexts[0]->tab;
 		$tab = $this->getTab($context,$tab);
