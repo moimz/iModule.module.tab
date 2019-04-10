@@ -8,14 +8,13 @@
  * @author Arzz (arzz@arzz.com)
  * @license MIT License
  * @version 3.0.0
- * @modified 2018. 5. 21.
+ * @modified 2019. 4. 9.
  */
 if (defined('__IM__') == false) exit;
 
 $modules = $this->IM->getModule()->getContextModules();
 $lists = array();
 for ($i=0, $loop=count($modules);$i<$loop;$i++) {
-//	if ($modules[$i]->module == 'tab') continue;
 	$mModule = $this->IM->getModule($modules[$i]->module);
 	if (method_exists($mModule,'setUrl') == false) continue;
 	$lists[] = $modules[$i];
@@ -23,5 +22,5 @@ for ($i=0, $loop=count($modules);$i<$loop;$i++) {
 
 $results->success = true;
 $results->lists = $lists;
-$results->count = count($lists);
+$results->total = count($lists);
 ?>
