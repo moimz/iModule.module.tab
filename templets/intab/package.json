@@ -1,0 +1,14 @@
+{
+	"title":{
+		"ko":"탭모듈 스몰 템플릿"
+	},
+	"version":"3.0.0",
+	"author":{
+		"name":"wioz"
+	},
+	"homepage":"https://www.imodule.kr",
+	"language":"ko",
+	"styles":[
+		"/styles/style.css"
+	]
+}

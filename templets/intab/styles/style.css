@@ -1,0 +1,5 @@
+div[data-role=intabbar] {padding-bottom:20px; border-bottom:1px solid #d9dadb;}
+div[data-role=intabbar] > ul {list-style:none; font-size:0; overflow:hidden;}
+div[data-role=intabbar] > ul > li {display:inline-block; vertical-align:top;}
+div[data-role=intabbar] > ul > li > a {display:block; height:40px; padding:0px 15px; line-height:40px; font-size:14px; text-decoration:none; color:#666;}
+div[data-role=intabbar] > ul > li.selected > a {background:#014da1; color:#fff; border-radius:2px;}
