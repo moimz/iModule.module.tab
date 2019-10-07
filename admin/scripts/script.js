@@ -7,7 +7,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license GPLv3
  * @version 3.0.0
- * @modified 2019. 2. 6.
+ * @modified 2019. 10. 7.
  */
 var Tab = {
 	/**
@@ -258,9 +258,9 @@ var Tab = {
 											autoLoad:true,
 											remoteSort:false,
 											sorters:[{property:"path",direction:"ASC"}],
-											fields:["path"]
+											fields:["path","display"]
 										}),
-										displayField:"path",
+										displayField:"display",
 										valueField:"path",
 										afterBodyEl:'<div class="x-form-help">' + Admin.getText("configs/sitemap/form/header_external_help") + '</div>'
 									}),
@@ -316,9 +316,9 @@ var Tab = {
 											autoLoad:true,
 											remoteSort:false,
 											sorters:[{property:"path",direction:"ASC"}],
-											fields:["path"]
+											fields:["path","display"]
 										}),
-										displayField:"path",
+										displayField:"display",
 										valueField:"path",
 										afterBodyEl:'<div class="x-form-help"> ' + Admin.getText("configs/sitemap/form/footer_external_help") + '</div>'
 									}),
@@ -478,9 +478,9 @@ var Tab = {
 											autoLoad:true,
 											remoteSort:false,
 											sorters:[{property:"path",direction:"ASC"}],
-											fields:["path"]
+											fields:["path","display"]
 										}),
-										displayField:"path",
+										displayField:"display",
 										valueField:"path",
 										afterBodyEl:'<div class="x-form-help">'+Admin.getText("configs/sitemap/form/external_help")+'</div>'
 									})
