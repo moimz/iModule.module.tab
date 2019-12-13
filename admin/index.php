@@ -8,7 +8,7 @@
  * @author Arzz (arzz@arzz.com)
  * @license GPLv3
  * @version 3.0.0
- * @modified 2019. 2. 6.
+ * @modified 2019. 12. 13.
  */
 if (defined('__IM__') == false) exit;
 ?>
@@ -33,6 +33,16 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 						selected:null,
 						title:Tab.getText("admin/group/title"),
 						tbar:[
+							Admin.searchField("ModuleTabGroupKeyword",200,"",function(keyword) {
+								Ext.getCmp("ModuleTabGroupList").getStore().clearFilter();
+								
+								if (keyword.length > 0) {
+									Ext.getCmp("ModuleTabGroupList").getStore().filter(function(record) {
+										return record.data.title.indexOf(keyword) > -1;
+									});
+								}
+							}),
+							"-",
 							new Ext.Button({
 								text:Tab.getText("admin/group/add"),
 								iconCls:"mi mi-plus",
@@ -85,7 +95,7 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 						}),
 						columns:[{
 							text:Tab.getText("admin/group/columns/title"),
-							width:150,
+							width:200,
 							dataIndex:"title"
 						},{
 							text:Tab.getText("admin/group/columns/templet"),
@@ -94,7 +104,7 @@ Ext.onReady(function () { Ext.getCmp("iModuleAdminPanel").add(
 							dataIndex:"templet"
 						},{
 							text:Tab.getText("admin/group/columns/contexts"),
-							width:80,
+							width:70,
 							dataIndex:"contexts",
 							align:"right",
 							renderer:function(value) {
