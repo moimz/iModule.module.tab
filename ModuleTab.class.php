@@ -511,7 +511,7 @@ class ModuleTab {
 			$footer = '';
 		}
 		
-		$context = $this->getTabContext($parent,$tab->tab);
+		$context = $this->getTabContext($parent,$tab->tab,$configs);
 		
 		/**
 		 * 템플릿파일을 호출한다.
@@ -526,7 +526,7 @@ class ModuleTab {
 	 * @param string $tab 탭 컨텍스트 ID
 	 * @return string $html 컨텍스트 HTML
 	 */
-	function getTabContext($parent,$tab) {
+	function getTabContext($parent,$tab,$configs=null) {
 		$context = $this->getTab($parent,$tab);
 		
 		/**
@@ -564,6 +564,14 @@ class ModuleTab {
 		if ($context->type == 'MODULE') {
 			$baseUrl = $this->baseUrl ? str_replace($this->IM->getUrl(null,null,false).'/','',$this->baseUrl).'/' : '';
 			$baseUrl.= $context->tab;
+			
+			if ($configs != null) {
+				$context->context->configs = $context->context->configs == null ? new stdClass() : $context->context->configs;
+				foreach ($configs as $key=>$value) {
+					if (isset($context->context->configs->{$key}) === false) $context->context->configs->{$key} = $value;
+				}
+			}
+			
 			return $this->IM->getModule($context->context->module,false,$context->context->module == 'tab')->setUrl($baseUrl)->getContext($context->context->context,$context->context->configs);
 		}
 	}
