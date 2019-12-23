@@ -568,6 +568,7 @@ class ModuleTab {
 			if ($configs != null) {
 				$context->context->configs = $context->context->configs == null ? new stdClass() : $context->context->configs;
 				foreach ($configs as $key=>$value) {
+					if (preg_match('/^templet/',$key) == true) continue;
 					if (isset($context->context->configs->{$key}) === false) $context->context->configs->{$key} = $value;
 				}
 			}
