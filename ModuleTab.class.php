@@ -705,6 +705,7 @@ class ModuleTab {
 				$item->domain = $page->domain;
 				$item->language = $page->language;
 				$item->context = $tab->context;
+				$item->permission = $page->permission;
 				$item->url = $page->url.'/'.$tab->tab;
 				$matches[] = $item;
 			}
