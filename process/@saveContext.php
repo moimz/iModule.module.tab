@@ -1,7 +1,7 @@
 <?php
 /**
  * 이 파일은 iModule 탭모듈의 일부입니다. (https://www.imodules.io)
- * 
+ *
  * 탭 컨텍스트를 저장한다.
  *
  * @file /modules/tab/process/@saveContext.php
@@ -37,7 +37,7 @@ if ($type == 'LINK') {
 	} elseif ($header->type == 'EXTERNAL') {
 		$header->external = Request('header_external') ? Request('header_external') : $errors['header_external'] = $this->getErrorText('REQUIRED');
 	}
-	
+
 	$footer = new stdClass();
 	$footer->type = Request('footer_type');
 	if ($footer->type == 'TEXT') {
@@ -55,13 +55,13 @@ $context = new stdClass();
 if ($type == 'MODULE') {
 	$context->module = Request('target') ? Request('target') : $errors['target'] = $this->getErrorText('REQUIRED');
 	$context->context = Request('context') ? Request('context') : $errors['context'] = $this->getErrorText('REQUIRED');
-	
+
 	if ($context->module == 'tab' && $context->context == $parent) {
 		$results->success = false;
 		$results->errors = array('context'=>'현재탭이 속한 탭 그룹을 선택할 수 없습니다.');
 		return;
 	}
-	
+
 	$configs = array();
 	foreach ($_POST as $key=>$value) {
 		if (preg_match('/^@(.*?)_configs_(.*?)$/',$key,$match) == true && array_key_exists('@'.$match[1],$_POST) == true) {
@@ -91,7 +91,7 @@ if (count($errors) == 0) {
 	$insert['header'] = $header;
 	$insert['footer'] = $footer;
 	$insert['context'] = json_encode($context,JSON_UNESCAPED_UNICODE | JSON_NUMERIC_CHECK);
-	
+
 	if ($oTab) {
 		$this->db()->update($this->table->context,$insert)->where('parent',$parent)->where('tab',$oTab)->execute();
 	} else {
@@ -99,7 +99,12 @@ if (count($errors) == 0) {
 		$insert['sort'] = $sort == null ? 0 : $sort->sort + 1;
 		$this->db()->insert($this->table->context,$insert)->execute();
 	}
-	
+
+	/**
+	 * 사이트맵 캐시를 제거한다.
+	 */
+	$this->IM->cache()->reset('core','sitemap','all');
+
 	$results->success = true;
 } else {
 	$results->success = false;
