@@ -40,7 +40,7 @@
 				},
 				"templet":{
 					"type":"varchar",
-					"length":20,
+					"length":100,
 					"default":"default",
 					"comment":"탭 그룹 템플릿"
 				},
